@@ -16,6 +16,7 @@ use App\Service\Provider\PackagesProvider;
 use App\Service\Provider\UlidProvider;
 use App\Service\Provider\VersionsProvider;
 use App\Traits\ProvidesUnescapedJsonResponsesTrait;
+use Http\Client\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -30,49 +31,47 @@ class EndpointController extends AbstractController
     use ProvidesUnescapedJsonResponsesTrait;
 
     /**
-     * @Route("/aliases.json", name="endpoint_aliases")
-     *
      * @param AliasesProvider $provider
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/aliases.json', name: 'endpoint_aliases')]
     public function aliases(AliasesProvider $provider): JsonResponse
     {
         return $this->unescapedSlashesJson($provider->provideAliases());
     }
 
     /**
-     * @Route("/versions.json", name="endpoint_versions")
+     * @param VersionsProvider $provider
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/versions.json', name: 'endpoint_versions')]
     public function versions(VersionsProvider $provider): JsonResponse
     {
         return $this->unescapedSlashesJson($provider->provideVersions());
     }
 
     /**
-     * @Route("/ulid", name="endpoint_ulid")
-     *
      * @param UlidProvider $provider
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/ulid', name: 'endpoint_ulid')]
     public function ulid(UlidProvider $provider): JsonResponse
     {
         return $this->unescapedSlashesJson(['ulid' => $provider->provideUlid()]);
     }
 
     /**
-     * @Route("/p/{packages}", name="endpoint_packages")
-     *
      * @param string           $packages
      * @param PackagesProvider $provider
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      *
-     * @throws \Http\Client\Exception
+     * @throws Exception
      */
+    #[Route('/p/{packages}', name: 'endpoint_packages')]
     public function packages(string $packages, PackagesProvider $provider): JsonResponse
     {
         return $this->unescapedSlashesJson($provider->providePackages($packages));

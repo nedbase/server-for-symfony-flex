@@ -12,6 +12,7 @@
 namespace App\Controller;
 
 use App\Service\RecipeRepoManager;
+use Cz\Git\GitException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Routing\Annotation\Route;
@@ -24,14 +25,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class WebhookController extends AbstractController
 {
     /**
-     * @Route("/webhook/update", name="webhook_update", methods={"POST"})
-     *
      * @param RecipeRepoManager $repoManager
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      *
-     * @throws \Cz\Git\GitException
+     * @throws GitException
      */
+    #[Route('/webhook/update', name: 'webhook_update', methods: ['POST'])]
     public function update(RecipeRepoManager $repoManager): JsonResponse
     {
         foreach ($repoManager->getConfiguredRepos() as $repo) {

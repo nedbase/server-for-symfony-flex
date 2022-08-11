@@ -26,23 +26,21 @@ use Symfony\Component\Routing\Annotation\Route;
 class FrontendController extends AbstractController
 {
     /**
-     * @Route("/", name="frontend_dashboard")
-     *
-     * @return mixed|\Symfony\Component\HttpFoundation\Response
+     * @return Response
      */
+    #[Route('/', name: 'frontend_dashboard')]
     public function dashboard(): Response
     {
         return $this->render('dashboard.html.twig');
     }
 
     /**
-     * @Route("/ui/data", name="frontend_dashboard_data")
-     *
      * @param SystemStatusReportCompiler $reportGenerator
      * @param LocalRecipeCompiler        $recipeCompiler
      *
-     * @return \Symfony\Component\HttpFoundation\JsonResponse
+     * @return JsonResponse
      */
+    #[Route('/ui/data', name: 'frontend_dashboard_data')]
     public function dashboardData(SystemStatusReportCompiler $reportGenerator, LocalRecipeCompiler $recipeCompiler): JsonResponse
     {
         return $this->json([
