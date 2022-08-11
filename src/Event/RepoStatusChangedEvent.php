@@ -12,7 +12,7 @@
 namespace App\Event;
 
 use App\RecipeRepo\RecipeRepo;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * Class RepoStatusChangedEvent.
@@ -28,8 +28,6 @@ class RepoStatusChangedEvent extends Event
 
     /**
      * RepoStatusChangedEvent constructor.
-     *
-     * @param RecipeRepo $recipeRepo
      */
     public function __construct(RecipeRepo $recipeRepo)
     {
