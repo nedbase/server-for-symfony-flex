@@ -52,9 +52,9 @@ class OfficialEndpointProxy
      */
     public function getAliases()
     {
-        $request = new Request('GET', $this->endpoint.'aliases.json');
+        $request = new Request('GET', $this->endpoint.'index.json');
 
-        return $this->decoder->getDecodedResponse($request);
+        return $this->decoder->getDecodedResponse($request)['aliases'];
     }
 
     /**
