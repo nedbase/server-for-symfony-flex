@@ -1,4 +1,4 @@
 grumphp:
     tasks:
-        phpcsfixer2:
+        phpcsfixer:
             config: .php-cs-fixer.dist.php
