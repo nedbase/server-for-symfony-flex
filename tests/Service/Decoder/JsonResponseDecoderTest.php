@@ -11,7 +11,7 @@ use Nyholm\Psr7\Stream;
 use PHPUnit\Framework\TestCase;
 use Psr\Http\Message\ResponseInterface;
 use Psr\Http\Message\StreamInterface;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class JsonResponseDecoderTest extends TestCase
 {
@@ -26,7 +26,7 @@ class JsonResponseDecoderTest extends TestCase
     private $cache;
 
     /**
-     * @var \Prophecy\Prophecy\ObjectProphecy|FilesystemCache
+     * @var \Prophecy\Prophecy\ObjectProphecy|FilesystemAdapter
      */
     private $simpleCache;
 
@@ -34,7 +34,7 @@ class JsonResponseDecoderTest extends TestCase
     {
         $this->client = $this->prophesize(HttpClient::class);
         $this->cache = $this->prophesize(Cache::class);
-        $this->simpleCache = $this->prophesize(FilesystemCache::class);
+        $this->simpleCache = $this->prophesize(FilesystemAdapter::class);
         $this->cache->__invoke()->willReturn($this->simpleCache->reveal());
     }
 

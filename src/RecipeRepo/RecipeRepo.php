@@ -16,11 +16,12 @@ use App\Service\Cache;
 use Cz\Git\GitException;
 use InvalidArgumentException;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\Finder\SplFileInfo;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * Class RecipeRepo.
@@ -43,7 +44,7 @@ abstract class RecipeRepo implements \JsonSerializable
     /** @var string */
     private $fullRepoPath;
 
-    /** @var FilesystemCache */
+    /** @var FilesystemAdapter */
     private $cache;
 
     /** @var LoggerInterface */
@@ -54,12 +55,6 @@ abstract class RecipeRepo implements \JsonSerializable
 
     /**
      * RecipeRepo constructor.
-     *
-     * @param string                   $repoUrl
-     * @param string                   $projectDir
-     * @param Cache                    $cache
-     * @param LoggerInterface          $logger
-     * @param EventDispatcherInterface $eventDispatcher
      */
     public function __construct(
         string $repoUrl,
@@ -238,7 +233,10 @@ abstract class RecipeRepo implements \JsonSerializable
      */
     private function handleRepoStatusChange()
     {
-        $this->cache->set('repo-updated-'.$this->repoDirName, date('Y-m-d H:i:s'));
+        $this->cache->delete('repo-updated-'.$this->repoDirName);
+        $this->cache->get('repo-updated-'.$this->repoDirName, function (ItemInterface $item) {
+            return date('Y-m-d H:i:s');
+        });
 
         $statusChangedEvent = new RepoStatusChangedEvent($this);
         $this->eventDispatcher->dispatch($statusChangedEvent);

@@ -14,7 +14,7 @@ namespace App\EventSubscriber;
 use App\Event\RepoStatusChangedEvent;
 use App\Service\Cache;
 use App\Service\Provider\AliasesProvider;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -24,13 +24,11 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class LocalAliasEventSubscriber implements EventSubscriberInterface
 {
-    /** @var FilesystemCache */
+    /** @var FilesystemAdapter */
     private $cache;
 
     /**
      * LocalAliasEventSubscriber constructor.
-     *
-     * @param Cache $cache
      */
     public function __construct(Cache $cache)
     {
@@ -47,9 +45,6 @@ class LocalAliasEventSubscriber implements EventSubscriberInterface
         ];
     }
 
-    /**
-     * @param RepoStatusChangedEvent $event
-     */
     public function onRepoStatusChange(RepoStatusChangedEvent $event)
     {
         if ($this->cache->has(AliasesProvider::LOCAL_ALIASES_CACHE_KEY)) {

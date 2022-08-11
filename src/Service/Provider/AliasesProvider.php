@@ -15,7 +15,7 @@ use App\Entity\Recipe;
 use App\Service\Cache;
 use App\Service\Compiler\LocalRecipeCompiler;
 use App\Service\OfficialEndpointProxy;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * Class AliasesProvider.
@@ -32,16 +32,11 @@ class AliasesProvider
     /** @var OfficialEndpointProxy */
     private $officialEndpointProxy;
 
-    /** @var FilesystemCache */
+    /** @var FilesystemAdapter */
     private $cache;
 
     /**
      * AliasesProvider constructor.
-     *
-     * @param LocalRecipeCompiler   $recipeCompiler
-     * @param bool                  $enableProxy
-     * @param OfficialEndpointProxy $officialEndpointProxy
-     * @param Cache                 $cache
      */
     public function __construct(
         LocalRecipeCompiler $recipeCompiler,
@@ -114,9 +109,6 @@ class AliasesProvider
      * If one of the recipes is local, it will be returned.
      * If not, the recipe with an official alias will be returned.
      * If there is none, $recipe1 will be returned.
-     *
-     * @param Recipe $recipe1
-     * @param Recipe $recipe2
      *
      * @return Recipe
      */

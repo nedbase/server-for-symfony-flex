@@ -6,7 +6,7 @@ use App\Service\Cache;
 use Http\Client\Exception\NetworkException;
 use Http\Client\HttpClient;
 use Nyholm\Psr7\Request;
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class JsonResponseDecoder
 {
@@ -16,14 +16,9 @@ class JsonResponseDecoder
     /** @var HttpClient */
     private $client;
 
-    /** @var FilesystemCache */
+    /** @var FilesystemAdapter */
     private $cache;
 
-    /**
-     * @param bool       $cacheEndpoint
-     * @param HttpClient $client
-     * @param Cache      $cache
-     */
     public function __construct(bool $cacheEndpoint, HttpClient $client, Cache $cache)
     {
         $this->cacheEndpoint = $cacheEndpoint;
@@ -32,8 +27,6 @@ class JsonResponseDecoder
     }
 
     /**
-     * @param Request $request
-     *
      * @return array|mixed|\Psr\Http\Message\StreamInterface
      *
      * @throws \Http\Client\Exception
@@ -71,8 +64,6 @@ class JsonResponseDecoder
     }
 
     /**
-     * @param Request $request
-     *
      * @return string
      */
     private function getCacheId(Request $request)

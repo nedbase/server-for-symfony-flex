@@ -11,7 +11,7 @@
 
 namespace App\Service;
 
-use Symfony\Component\Cache\Simple\FilesystemCache;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 /**
  * Class Cache.
@@ -23,14 +23,12 @@ class Cache
     const CACHE_DIR = '/var/cache/data';
 
     /**
-     * @var FilesystemCache
+     * @var FilesystemAdapter
      */
     private $cache;
 
     /**
      * Cache constructor.
-     *
-     * @param string $projectDir
      */
     public function __construct(string $projectDir)
     {
@@ -39,11 +37,11 @@ class Cache
         if (!is_dir($cachePath)) {
             mkdir($cachePath);
         }
-        $this->cache = new FilesystemCache('flex-server', 0, $cachePath);
+        $this->cache = new FilesystemAdapter('flex-server', 0, $cachePath);
     }
 
     /**
-     * @return FilesystemCache
+     * @return FilesystemAdapter
      */
     public function __invoke()
     {

@@ -12,8 +12,8 @@
 namespace App\Service;
 
 use App\Service\Compiler\SystemStatusReportCompiler;
-use Symfony\Component\Cache\Simple\FilesystemCache;
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
+use Symfony\Contracts\Cache\CacheInterface;
 
 /**
  * Class CacheClear.
@@ -22,7 +22,7 @@ use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
  */
 class CacheClear implements CacheClearerInterface
 {
-    /** @var FilesystemCache */
+    /** @var CacheInterface */
     private $cache;
 
     /** @var SystemStatusReportCompiler */
@@ -30,9 +30,6 @@ class CacheClear implements CacheClearerInterface
 
     /**
      * CacheClear constructor.
-     *
-     * @param Cache                      $cache
-     * @param SystemStatusReportCompiler $systemStatusReportCompiler
      */
     public function __construct(Cache $cache, SystemStatusReportCompiler $systemStatusReportCompiler)
     {
