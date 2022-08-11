@@ -29,9 +29,6 @@ class OfficialEndpointProxy
 
     /**
      * OfficialEndpointProxy constructor.
-     *
-     * @param string              $officialEndpoint
-     * @param JsonResponseDecoder $decoder
      */
     public function __construct(
         string $officialEndpoint,
@@ -68,15 +65,13 @@ class OfficialEndpointProxy
      */
     public function getVersions()
     {
-        $request = new Request('GET', $this->endpoint.'versions.json');
+        $request = new Request('GET', $this->endpoint.'index.json');
 
-        return $this->decoder->getDecodedResponse($request);
+        return $this->decoder->getDecodedResponse($request)['versions'];
     }
 
     /**
      * Provides the official response for the packages call.
-     *
-     * @param string $packagesRequestString
      *
      * @return array|string
      *

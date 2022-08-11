@@ -16,6 +16,7 @@ use App\Service\Cache;
 use App\Service\Compiler\LocalRecipeCompiler;
 use App\Service\OfficialEndpointProxy;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 /**
  * Class AliasesProvider.
@@ -24,7 +25,7 @@ use Symfony\Component\Cache\Adapter\FilesystemAdapter;
  */
 class AliasesProvider
 {
-    const LOCAL_ALIASES_CACHE_KEY = 'aliases-local';
+    public const LOCAL_ALIASES_CACHE_KEY = 'aliases-local';
 
     /** @var LocalRecipeCompiler */
     private $recipeCompiler;
@@ -77,8 +78,8 @@ class AliasesProvider
      */
     public function getLocalAliases()
     {
-        if ($this->cache->has(self::LOCAL_ALIASES_CACHE_KEY)) {
-            return $this->cache->get(self::LOCAL_ALIASES_CACHE_KEY);
+        if ($this->cache->hasItem(self::LOCAL_ALIASES_CACHE_KEY)) {
+            return $this->cache->getItem(self::LOCAL_ALIASES_CACHE_KEY);
         }
 
         $aliases = [];
@@ -100,7 +101,10 @@ class AliasesProvider
             return $recipe->getOfficialPackageName();
         }, $aliases);
 
-        $this->cache->set(self::LOCAL_ALIASES_CACHE_KEY, $aliases);
+        $this->cache->delete(self::LOCAL_ALIASES_CACHE_KEY);
+        $this->cache->get(self::LOCAL_ALIASES_CACHE_KEY, function (ItemInterface $item) use ($aliases) {
+            return $aliases;
+        });
 
         return $aliases;
     }

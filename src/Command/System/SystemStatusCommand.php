@@ -29,8 +29,6 @@ class SystemStatusCommand extends Command
 
     /**
      * SystemStatusCommand constructor.
-     *
-     * @param SystemStatusReportCompiler $reportCompiler
      */
     public function __construct(SystemStatusReportCompiler $reportCompiler)
     {
@@ -45,11 +43,7 @@ class SystemStatusCommand extends Command
             ->setDescription('Provides an overview over the system status');
     }
 
-    /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     */
-    public function execute(InputInterface $input, OutputInterface $output)
+    public function execute(InputInterface $input, OutputInterface $output): int
     {
         $io = new SymfonyStyle($input, $output);
         $report = $this->reportCompiler->getReport();
@@ -72,5 +66,7 @@ class SystemStatusCommand extends Command
                 null != $repo['last_updated'] ? $repo['last_updated'] : '',
             ];
         }, $report['repos'], array_keys($report['repos'])));
+
+        return 0;
     }
 }
