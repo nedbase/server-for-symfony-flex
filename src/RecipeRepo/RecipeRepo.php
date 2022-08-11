@@ -241,7 +241,7 @@ abstract class RecipeRepo implements \JsonSerializable
         $this->cache->set('repo-updated-'.$this->repoDirName, date('Y-m-d H:i:s'));
 
         $statusChangedEvent = new RepoStatusChangedEvent($this);
-        $this->eventDispatcher->dispatch(RepoStatusChangedEvent::NAME, $statusChangedEvent);
+        $this->eventDispatcher->dispatch($statusChangedEvent);
     }
 
     /**
