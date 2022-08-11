@@ -16,6 +16,10 @@ class RecipePublicUrlResolver
         'default' => '/tree/master/',
     ];
 
+    public function __construct(private CustomPublicUrlBuilder $customPublicUrlBuilder)
+    {
+    }
+
     /**
      * @param Recipe $recipe
      *
@@ -29,6 +33,14 @@ class RecipePublicUrlResolver
 
         $repoUrl = $recipe->getRepo()->getRepoUrl();
         $urlProtocol = parse_url($repoUrl, PHP_URL_SCHEME);
+
+        if (isset($_ENV['FLEX_RECIPE_PUBLIC_URL_SCHEME'])) {
+            return $this->customPublicUrlBuilder->build(
+                $repoUrl,
+                $recipe->getOfficialPackageName(),
+                $_ENV['FLEX_RECIPE_PUBLIC_URL_SCHEME']
+            );
+        }
 
         switch ($urlProtocol) {
             case 'http':
@@ -73,6 +85,7 @@ class RecipePublicUrlResolver
      */
     private function resolveSshUrl(string $repoUrl, string $packageName)
     {
+        dump(parse_url($repoUrl));
         if (preg_match('/^(?:ssh(?::\/\/)?)?(?:git)?@?([a-zA-Z0-9-_\.]+\.[a-z]+)(:[0-9])?(?:[:\/]([a-zA-Z0-9-_\.]*))?(\/|:)([a-zA-Z0-9-_\.]+)\/([a-zA-Z0-9-_]+)(?:.git)?$/', $repoUrl, $urlParts)) {
             $host = $urlParts[1];
             $port = empty($urlParts[2]) ? null : $urlParts[2];
@@ -80,6 +93,7 @@ class RecipePublicUrlResolver
             $user = $urlParts[4];
             $repo = $urlParts[5];
 
+            dump($urlParts);
             if (null !== $prefix) {
                 return $this->buildUrl($host, implode('/', [$prefix, $user, $repo]), $packageName, $port);
             }
