@@ -7,6 +7,7 @@ use Http\Client\Exception\NetworkException;
 use Http\Client\HttpClient;
 use Nyholm\Psr7\Request;
 use Symfony\Component\Cache\Adapter\FilesystemAdapter;
+use Symfony\Contracts\Cache\ItemInterface;
 
 class JsonResponseDecoder
 {
@@ -39,8 +40,8 @@ class JsonResponseDecoder
             $decodedResponse = json_decode($response->getBody()->getContents(), true);
 
             if (!in_array($response->getStatusCode(), range(200, 299))) {
-                if ($this->cacheEndpoint && $this->cache->has($this->getCacheId($request))) {
-                    return $this->cache->get($this->getCacheId($request));
+                if ($this->cacheEndpoint && $this->cache->hasItem($this->getCacheId($request))) {
+                    return $this->cache->getItem($this->getCacheId($request));
                 }
 
                 return [];
@@ -51,7 +52,10 @@ class JsonResponseDecoder
             }
 
             if ($this->cacheEndpoint) {
-                $this->cache->set($this->getCacheId($request), $decodedResponse);
+                $this->cache->delete($this->getCacheId($request));
+                $this->cache->get($this->getCacheId($request), function (ItemInterface $item) use ($decodedResponse) {
+                    return $decodedResponse;
+                });
             }
 
             return $decodedResponse;

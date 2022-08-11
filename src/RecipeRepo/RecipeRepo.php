@@ -162,7 +162,7 @@ abstract class RecipeRepo implements \JsonSerializable
             'local_path' => $this->fullRepoPath,
             'remote_readable' => GitRepo::isRemoteUrlReadable($this->repoUrl),
             'downloaded' => $loaded,
-            'last_updated' => $this->cache->get('repo-updated-'.$this->repoDirName),
+            'last_updated' => $this->cache->getItem('repo-updated-'.$this->repoDirName),
             'slug' => $this->repoDirName,
         ];
     }
