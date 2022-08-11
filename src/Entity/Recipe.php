@@ -66,9 +66,6 @@ class Recipe implements \JsonSerializable
         return $this->author;
     }
 
-    /**
-     * @param string $author
-     */
     public function setAuthor(string $author)
     {
         $this->author = $author;
@@ -82,9 +79,6 @@ class Recipe implements \JsonSerializable
         return $this->package;
     }
 
-    /**
-     * @param string $package
-     */
     public function setPackage(string $package)
     {
         $this->package = $package;
@@ -106,9 +100,6 @@ class Recipe implements \JsonSerializable
         return $this->version;
     }
 
-    /**
-     * @param string $version
-     */
     public function setVersion(string $version)
     {
         $this->version = $version;
@@ -122,9 +113,6 @@ class Recipe implements \JsonSerializable
         return $this->localPath;
     }
 
-    /**
-     * @param string $localPath
-     */
     public function setLocalPath(string $localPath)
     {
         $this->localPath = $localPath;
@@ -138,9 +126,6 @@ class Recipe implements \JsonSerializable
         return $this->repo;
     }
 
-    /**
-     * @param RecipeRepo $repo
-     */
     public function setRepo(RecipeRepo $repo)
     {
         $this->repo = $repo;
@@ -154,9 +139,6 @@ class Recipe implements \JsonSerializable
         return $this->repoSlug;
     }
 
-    /**
-     * @param string $repoSlug
-     */
     public function setRepoSlug(string $repoSlug)
     {
         $this->repoSlug = $repoSlug;
@@ -170,9 +152,6 @@ class Recipe implements \JsonSerializable
         return $this->manifest;
     }
 
-    /**
-     * @param array $manifest
-     */
     public function setManifest(array $manifest)
     {
         $this->manifest = $manifest;
@@ -186,34 +165,22 @@ class Recipe implements \JsonSerializable
         return $this->manifestValid;
     }
 
-    /**
-     * @param bool $manifestValid
-     */
     public function setManifestValid(bool $manifestValid)
     {
         $this->manifestValid = $manifestValid;
     }
 
-    /**
-     * @return string
-     */
     public function getPublicUrl(): string
     {
         return $this->publicUrl;
     }
 
-    /**
-     * @param string $publicUrl
-     */
     public function setPublicUrl(string $publicUrl): void
     {
         $this->publicUrl = $publicUrl;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'author' => $this->getAuthor(),

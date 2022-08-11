@@ -30,7 +30,7 @@ use Symfony\Contracts\Cache\ItemInterface;
  */
 abstract class RecipeRepo implements \JsonSerializable
 {
-    const REPO_PATH = '/var/repo/';
+    private const REPO_PATH = '/var/repo/';
 
     /** @var GitRepo */
     private $repo;
@@ -266,10 +266,7 @@ abstract class RecipeRepo implements \JsonSerializable
         return $this->fullRepoPath;
     }
 
-    /**
-     * @return array
-     */
-    public function jsonSerialize()
+    public function jsonSerialize(): array
     {
         return [
             'slug' => $this->repoDirName,
