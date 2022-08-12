@@ -164,6 +164,15 @@ class PackagesProvider
         foreach (explode(';', rtrim($packagesRequestString, ';')) as $requestedPackage) {
             $packageDetails = explode(',', $requestedPackage);
 
+            if (count($packageDetails) === 2) {
+                if ('php' === $packageDetails[0]) {
+                    continue;
+                }
+                if (str_starts_with($packageDetails[0], 'ext-')) {
+                    continue;
+                }
+            }
+
             if (count($packageDetails) < 3) {
                 throw new \InvalidArgumentException('Invalid package string provided');
             }
